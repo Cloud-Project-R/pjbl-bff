@@ -1,0 +1,35 @@
+<policies>
+  <inbound>
+    <!-- CORS: só o front pode chamar o Gateway pelo navegador -->
+    <cors allow-credentials="false">
+      <allowed-origins>
+        <origin>https://pjbl-frontend-two.vercel.app</origin>
+        <origin>https://pjbl-frontend-cpd16.vercel.app</origin>
+        <origin>http://localhost:5173</origin>
+      </allowed-origins>
+      <allowed-methods preflight-result-max-age="300">
+        <method>GET</method>
+        <method>POST</method>
+        <method>PUT</method>
+        <method>DELETE</method>
+        <method>OPTIONS</method>
+      </allowed-methods>
+      <allowed-headers>
+        <header>Content-Type</header>
+        <header>Ocp-Apim-Subscription-Key</header>
+      </allowed-headers>
+    </cors>
+    <!-- Segurança: no máximo 100 chamadas por minuto por chave -->
+    <rate-limit calls="100" renewal-period="60" />
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

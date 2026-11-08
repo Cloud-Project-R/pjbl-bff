@@ -58,6 +58,20 @@ Exemplo de `GET /aggregated-data`:
 }
 ```
 
+## API Gateway (Azure API Management)
+
+Na nuvem, o front não chama o BFF direto: ele passa pelo **Azure API Management**
+(`apim-pjbl-reservas`, plano Consumo), que fica na frente do BFF.
+
+- **Roteamento:** `https://apim-pjbl-reservas.azure-api.net/reservas/*` → BFF. As rotas foram
+  importadas do Swagger do BFF (`/docs-json`).
+- **Segurança:** toda chamada precisa da chave de assinatura no cabeçalho
+  `Ocp-Apim-Subscription-Key` (sem ela: 401) e há limite de 100 chamadas por minuto.
+- **CORS:** só o endereço do front pode chamar pelo navegador. O CORS fica **só no Gateway**
+  (no BFF ele fica desligado na nuvem), para o navegador não receber o cabeçalho duplicado.
+
+A política aplicada está em [`gateway/politica-apim.xml`](gateway/politica-apim.xml).
+
 ## Tecnologias
 
 Node 22, TypeScript, NestJS, Swagger, Jest, Docker, Azure Container Apps.
